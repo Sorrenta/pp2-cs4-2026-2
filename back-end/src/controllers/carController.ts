@@ -1,25 +1,17 @@
 import type { Request, Response, NextFunction } from "express";
 
-import * as service from "../services/customerService";
+import * as service from "../services/carService";
 
-import type { CreateCustomerDto } from "../dto/customer/createCustomerDto";
-import type { UpdateCustomerDto } from "../dto/customer/updateCustomerDto";
+import type { CreateCarDto } from "../dto/car/createCarDto";
+import type { UpdateCarDto } from "../dto/car/updateCarDto";
 
-type CustomerIdParams = {
+type CarIdParams = {
   id: string;
 };
 
-type CreateCustomerRequest = Request<
-  Record<string, never>,
-  unknown,
-  CreateCustomerDto
->;
+type CreateCarRequest = Request<Record<string, never>, unknown, CreateCarDto>;
 
-type UpdateCustomerRequest = Request<
-  CustomerIdParams,
-  unknown,
-  UpdateCustomerDto
->;
+type UpdateCarRequest = Request<CarIdParams, unknown, UpdateCarDto>;
 
 export async function retrieveAll(
   req: Request,
@@ -27,62 +19,62 @@ export async function retrieveAll(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const customers = await service.findAll();
+    const cars = await service.findAll();
 
-    res.json(customers);
+    res.json(cars);
   } catch (error) {
     next(error);
   }
 }
 
 export async function retrieveOne(
-  req: Request<CustomerIdParams>,
+  req: Request<CarIdParams>,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
     const id = Number(req.params.id);
 
-    const customer = await service.findById(id);
+    const car = await service.findById(id);
 
-    res.json(customer);
+    res.json(car);
   } catch (error) {
     next(error);
   }
 }
 
 export async function create(
-  req: CreateCustomerRequest,
+  req: CreateCarRequest,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
-    const customer = await service.create(req.body);
+    const car = await service.create(req.body);
 
-    res.status(201).json(customer);
+    res.status(201).json(car);
   } catch (error) {
     next(error);
   }
 }
 
 export async function update(
-  req: UpdateCustomerRequest,
+  req: UpdateCarRequest,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
     const id = Number(req.params.id);
 
-    const customer = await service.update(id, req.body);
+    const car = await service.update(id, req.body);
 
-    res.json(customer);
+    res.json(car);
   } catch (error) {
     next(error);
   }
 }
 
 export async function remove(
-  req: Request<CustomerIdParams>,
+  req: Request<CarIdParams>,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
